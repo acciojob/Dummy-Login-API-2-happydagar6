@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-// Insert the original predefined user data provided in your assignment here
 const dummyUsers = [
+  { email: 'user@example.com', password: 'password123' },
   { email: 'test@example.com', password: 'password123' }
 ];
 
@@ -13,6 +13,7 @@ const App = () => {
   const [passwordError, setPasswordError] = useState(false);
   
   const [isLoading, setIsLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
     if (email === '') {
@@ -28,6 +29,7 @@ const App = () => {
     
     setUserError(false);
     setPasswordError(false);
+    setSuccessMessage('');
     setIsLoading(true);
 
     setTimeout(() => {
@@ -42,41 +44,46 @@ const App = () => {
       } else {
         setUserError(false);
         setPasswordError(false);
+        setSuccessMessage('Login successful!');
       }
     }, 3000);
   };
 
   return (
     <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
+      <h2>Login</h2>
+      
+      {successMessage && <h3 style={{ color: 'green' }}>{successMessage}</h3>}
+
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', width: '300px', gap: '15px' }}>
         
         <div>
+          <label style={{ display: 'block' }}>Email:</label>
           <input 
             type="email" 
             id="input-email" 
-            placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            style={{ width: '100%', padding: '8px' }}
+            style={{ width: '100%', padding: '5px' }}
           />
           {userError && (
-            <span id="user-error" style={{ color: 'red', display: 'block', marginTop: '5px' }}>
+            <span id="user-error" style={{ color: 'red', fontSize: '14px', display: 'block', marginTop: '5px' }}>
               User not found
             </span>
           )}
         </div>
 
         <div>
+          <label style={{ display: 'block' }}>Password:</label>
           <input 
             type="password" 
             id="input-password" 
-            placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            style={{ width: '100%', padding: '8px' }}
+            style={{ width: '100%', padding: '5px' }}
           />
           {passwordError && (
-            <span id="password-error" style={{ color: 'red', display: 'block', marginTop: '5px' }}>
+            <span id="password-error" style={{ color: 'red', fontSize: '14px', display: 'block', marginTop: '5px' }}>
               Password Incorrect
             </span>
           )}
@@ -86,9 +93,9 @@ const App = () => {
           type="submit" 
           id="submit-form-btn" 
           disabled={isLoading}
-          style={{ padding: '10px' }}
+          style={{ padding: '10px', cursor: isLoading ? 'not-allowed' : 'pointer' }}
         >
-          {isLoading ? 'Checking...' : 'Submit'}
+          {isLoading ? 'Checking...' : 'Login'}
         </button>
 
       </form>
